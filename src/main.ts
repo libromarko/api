@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { PrismaService } from './prisma/prisma.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   const prismaService = app.get(PrismaService);
 
@@ -12,6 +12,7 @@ async function bootstrap() {
     .setTitle('libromarko')
     .setDescription('libromarko API')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
