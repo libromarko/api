@@ -1,8 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtGuard } from 'src/auth/guard/jwt.guard';
 
+@ApiBearerAuth('JWT')
+@UseGuards(JwtGuard)
 @Controller('group')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}

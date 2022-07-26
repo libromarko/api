@@ -16,6 +16,8 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from '@prisma/client';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth('JWT')
+@UseGuards(JwtGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -25,8 +27,6 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @ApiBearerAuth('JWT')
-  @UseGuards(JwtGuard)
   @Get('me')
   me(@GetUser() user: User) {
     return user;
