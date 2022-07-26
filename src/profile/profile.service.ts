@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class ProfileService {
+  constructor(private prismaService: PrismaService) {}
+
   create(createProfileDto: CreateProfileDto) {
     return 'This action adds a new profile';
   }
@@ -12,12 +15,35 @@ export class ProfileService {
     return `This action returns all profile`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} profile`;
+  async findOne(id: string) {
+    const profile = await this.prismaService.profile.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    return profile;
   }
 
-  update(id: number, updateProfileDto: UpdateProfileDto) {
-    return `This action updates a #${id} profile`;
+  async findOneByUserId(userId: string) {
+    const profile = await this.prismaService.profile.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
+
+    return profile;
+  }
+
+  async update(id: string, updateProfileDto: UpdateProfileDto) {
+    const profile = await this.prismaService.profile.update({
+      where: {
+        id: id,
+      },
+      data: updateProfileDto,
+    });
+
+    return profile;
   }
 
   remove(id: number) {
