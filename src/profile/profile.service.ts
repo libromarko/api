@@ -11,8 +11,8 @@ export class ProfileService {
     return 'This action adds a new profile';
   }
 
-  findAll() {
-    return `This action returns all profile`;
+  async findAll() {
+    return await this.prismaService.profile.findMany();
   }
 
   async findOne(id: string) {
