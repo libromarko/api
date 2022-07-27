@@ -1,23 +1,56 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 
 @Injectable()
 export class BookmarkService {
-  create(createBookmarkDto: CreateBookmarkDto) {
-    return 'This action adds a new bookmark';
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async create(userId: string, createBookmarkDto: CreateBookmarkDto) {
+    return await this.prismaService.bookmark.create({
+      data: {
+        ...createBookmarkDto,
+        userId,
+        /* tags: {
+          create: [],
+        }, */
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all bookmark`;
+  async findAll() {
+    return await this.prismaService.bookmark.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bookmark`;
+  async findOne(id: string) {
+    return await this.prismaService.bookmark.findUnique({
+      where: {
+        id: id,
+      },
+    });
   }
 
-  update(id: number, updateBookmarkDto: UpdateBookmarkDto) {
-    return `This action updates a #${id} bookmark`;
+  async findOneByUserId(userId: string) {
+    return await this.prismaService.bookmark.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  }
+
+  async update(id: string, updateBookmarkDto: UpdateBookmarkDto) {
+    return await this.prismaService.bookmark.update({
+      where: {
+        id: id,
+      },
+      data: {
+        summary: updateBookmarkDto.summary,
+        groupId: updateBookmarkDto.groupId,
+        url: updateBookmarkDto.url,
+        //tags: updateBookmarkDto.tags,
+      },
+    });
   }
 
   remove(id: number) {
