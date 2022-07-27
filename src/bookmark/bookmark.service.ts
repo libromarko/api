@@ -12,9 +12,6 @@ export class BookmarkService {
       data: {
         ...createBookmarkDto,
         userId,
-        /* tags: {
-          create: [],
-        }, */
       },
     });
   }
@@ -44,12 +41,7 @@ export class BookmarkService {
       where: {
         id: id,
       },
-      data: {
-        summary: updateBookmarkDto.summary,
-        groupId: updateBookmarkDto.groupId,
-        url: updateBookmarkDto.url,
-        //tags: updateBookmarkDto.tags,
-      },
+      data: updateBookmarkDto,
     });
   }
 

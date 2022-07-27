@@ -22,7 +22,6 @@ model User {
   payments   Payment[]
   bookmarks  Bookmark[]
   groups     Group[]
-  tags       Tag[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
@@ -63,22 +62,11 @@ model Bookmark {
   userId    String
   group     Group    @relation(fields: [groupId], references: [id])
   groupId   String
-  tags      Tag[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Group {
-  id        String     @id @default(uuid())
-  name      String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  bookmarks Bookmark[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-}
-
-model Tag {
   id        String     @id @default(uuid())
   name      String
   user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -8,7 +8,6 @@ import { ActivationModule } from './activation/activation.module';
 import { PaymentModule } from './payment/payment.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { GroupModule } from './group/group.module';
-import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -23,7 +22,6 @@ import { TagModule } from './tag/tag.module';
     PaymentModule,
     BookmarkModule,
     GroupModule,
-    TagModule,
   ],
   controllers: [],
   providers: [],

@@ -25,11 +25,4 @@ export class CreateBookmarkDto {
   @IsOptional()
   @IsString()
   summary: string;
-
-  @ApiProperty({
-    description: 'Bookmark tags',
-    type: [String],
-  })
-  @IsOptional()
-  tags: string[];
 }
