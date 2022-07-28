@@ -8,10 +8,22 @@ export class BookmarkService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(userId: string, createBookmarkDto: CreateBookmarkDto) {
+    const group = await this.prismaService.group.findFirst({
+      where: {
+        userId: userId,
+      },
+    });
+
     return await this.prismaService.bookmark.create({
       data: {
-        ...createBookmarkDto,
-        userId,
+        summary: createBookmarkDto.summary,
+        url: createBookmarkDto.url,
+        group: {
+          connect: { id: group.id },
+        },
+        user: {
+          connect: { id: userId },
+        },
       },
     });
   }
