@@ -7,8 +7,18 @@ import { UpdateGroupDto } from './dto/update-group.dto';
 export class GroupService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
+  async create(userId, createGroupDto: CreateGroupDto) {
+    return await this.prismaService.group.create({
+      data: {
+        name: createGroupDto.name,
+        user: {
+          connect: { id: userId },
+        },
+        bookmarks: {
+          create: [],
+        },
+      },
+    });
   }
 
   async findAll() {
