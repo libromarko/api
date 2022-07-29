@@ -13,6 +13,8 @@ import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { User } from '@prisma/client';
 
 @ApiBearerAuth('JWT')
 @UseGuards(JwtGuard)
@@ -28,6 +30,11 @@ export class GroupController {
   @Get()
   findAll() {
     return this.groupService.findAll();
+  }
+
+  @Get('user')
+  findByUserId(@GetUser() user: User) {
+    return this.groupService.findByUserId(user.id);
   }
 
   @Get(':id')

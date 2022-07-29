@@ -15,6 +15,14 @@ export class GroupService {
     return await this.prismaService.group.findMany();
   }
 
+  async findByUserId(userId: string) {
+    return await this.prismaService.group.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} group`;
   }

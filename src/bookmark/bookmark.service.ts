@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Group } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
@@ -8,18 +9,26 @@ export class BookmarkService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(userId: string, createBookmarkDto: CreateBookmarkDto) {
-    const group = await this.prismaService.group.findFirst({
-      where: {
-        userId: userId,
-      },
-    });
+    let group: Group;
+
+    if (!createBookmarkDto.groupId) {
+      group = await this.prismaService.group.findFirst({
+        where: {
+          userId: userId,
+        },
+      });
+    }
 
     return await this.prismaService.bookmark.create({
       data: {
         summary: createBookmarkDto.summary,
         url: createBookmarkDto.url,
         group: {
-          connect: { id: group.id },
+          connect: {
+            id: createBookmarkDto.groupId
+              ? createBookmarkDto.groupId
+              : group.id,
+          },
         },
         user: {
           connect: { id: userId },
