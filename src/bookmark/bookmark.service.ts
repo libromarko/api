@@ -57,6 +57,16 @@ export class BookmarkService {
     });
   }
 
+  async findSkipTake(userId: string, skip: number, take: number) {
+    return await this.prismaService.bookmark.findMany({
+      skip: skip,
+      take: take,
+      where: {
+        userId: userId,
+      },
+    });
+  }
+
   async update(id: string, updateBookmarkDto: UpdateBookmarkDto) {
     return await this.prismaService.bookmark.update({
       where: {
