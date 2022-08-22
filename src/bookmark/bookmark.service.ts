@@ -21,7 +21,7 @@ export class BookmarkService {
 
     return await this.prismaService.bookmark.create({
       data: {
-        summary: createBookmarkDto.summary,
+        description: createBookmarkDto.description,
         url: createBookmarkDto.url,
         group: {
           connect: {

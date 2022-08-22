@@ -14,8 +14,8 @@ import { GroupModule } from './group/group.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    PrismaModule,
     AuthModule,
+    PrismaModule,
     UserModule,
     ProfileModule,
     ActivationModule,

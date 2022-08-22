@@ -19,10 +19,10 @@ export class CreateBookmarkDto {
   url: string;
 
   @ApiProperty({
-    description: 'Bookmark summary',
+    description: 'Bookmark description',
     type: String,
   })
   @IsOptional()
   @IsString()
-  summary: string;
+  description: string;
 }
