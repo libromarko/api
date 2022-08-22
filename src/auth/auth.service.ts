@@ -36,8 +36,7 @@ export class AuthService {
         },
       });
 
-      const token = await this.signToken(user.id, user.email);
-      return { access_token: token };
+      return { signup_success: true };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
