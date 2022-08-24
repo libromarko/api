@@ -49,6 +49,15 @@ export class BookmarkService {
     });
   }
 
+  async findBookmarksByGroupId(userId: string, groupId: string) {
+    return await this.prismaService.bookmark.findMany({
+      where: {
+        userId: userId,
+        groupId: groupId,
+      },
+    });
+  }
+
   async findOneByUserId(userId: string) {
     return await this.prismaService.bookmark.findMany({
       where: {

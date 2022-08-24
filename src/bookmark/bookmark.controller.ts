@@ -37,6 +37,11 @@ export class BookmarkController {
     return this.bookmarkService.findOneByUserId(user.id);
   }
 
+  @Get('group/:id')
+  findBookmarksByGroupId(@GetUser() user: User, @Param('id') id: string) {
+    return this.bookmarkService.findBookmarksByGroupId(user.id, id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.bookmarkService.findOne(id);
