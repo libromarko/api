@@ -85,7 +85,11 @@ export class BookmarkService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bookmark`;
+  async remove(id: string) {
+    return await this.prismaService.bookmark.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }
