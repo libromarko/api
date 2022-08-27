@@ -52,6 +52,11 @@ export class AuthService {
         email: signinAuthDto.email,
       },
     });
+
+    if (!user) {
+      throw new ForbiddenException('Credentials incorrect');
+    }
+
     const passwordMatches = await argon2.verify(
       user.password,
       signinAuthDto.password,
