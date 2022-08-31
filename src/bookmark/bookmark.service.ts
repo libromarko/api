@@ -72,14 +72,6 @@ export class BookmarkService {
     });
   }
 
-  async findBookmarksByPublicGroupId(groupId: string) {
-    return await this.prismaService.bookmark.findMany({
-      where: {
-        groupId: groupId,
-      },
-    });
-  }
-
   async findOneByUserId(userId: string) {
     return await this.prismaService.bookmark.findMany({
       where: {

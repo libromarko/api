@@ -39,6 +39,9 @@ export class GroupService {
       where: {
         AND: [{ id: groupId }, { public: true }],
       },
+      include: {
+        bookmarks: true,
+      },
     });
   }
 
