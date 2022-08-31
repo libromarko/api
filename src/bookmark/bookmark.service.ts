@@ -19,6 +19,20 @@ export class BookmarkService {
       });
     }
 
+    if (!group) {
+      group = await this.prismaService.group.create({
+        data: {
+          name: 'inbox',
+          user: {
+            connect: { id: userId },
+          },
+          bookmarks: {
+            create: [],
+          },
+        },
+      });
+    }
+
     return await this.prismaService.bookmark.create({
       data: {
         description: createBookmarkDto.description,
