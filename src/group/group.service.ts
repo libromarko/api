@@ -7,10 +7,11 @@ import { UpdateGroupDto } from './dto/update-group.dto';
 export class GroupService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(userId, createGroupDto: CreateGroupDto) {
+  async create(userId: string, createGroupDto: CreateGroupDto) {
     return await this.prismaService.group.create({
       data: {
         name: createGroupDto.name,
+        public: createGroupDto.public ? true : false,
         user: {
           connect: { id: userId },
         },
@@ -23,6 +24,22 @@ export class GroupService {
 
   async findAll() {
     return await this.prismaService.group.findMany();
+  }
+
+  async findAllPublic() {
+    return await this.prismaService.group.findMany({
+      where: {
+        public: true,
+      },
+    });
+  }
+
+  async findPublic(groupId: string) {
+    return await this.prismaService.group.findFirst({
+      where: {
+        AND: [{ id: groupId }, { public: true }],
+      },
+    });
   }
 
   async findByUserId(userId: string) {
