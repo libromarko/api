@@ -14,7 +14,7 @@ export class BookmarkService {
     if (!createBookmarkDto.groupId) {
       group = await this.prismaService.group.findFirst({
         where: {
-          userId: userId,
+          AND: [{ userId: userId }, { name: 'inbox' }],
         },
       });
     }
@@ -35,7 +35,9 @@ export class BookmarkService {
 
     return await this.prismaService.bookmark.create({
       data: {
-        description: createBookmarkDto.description,
+        description: createBookmarkDto.description
+          ? createBookmarkDto.description
+          : createBookmarkDto.url,
         url: createBookmarkDto.url,
         group: {
           connect: {
