@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateActivationDto } from './dto/create-activation.dto';
-import { UpdateActivationDto } from './dto/update-activation.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ActivationService {
-  create(createActivationDto: CreateActivationDto) {
-    return 'This action adds a new activation';
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async findByUserId(userId: string) {
+    return this.prismaService.activation.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all activation`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} activation`;
-  }
-
-  update(id: number, updateActivationDto: UpdateActivationDto) {
-    return `This action updates a #${id} activation`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} activation`;
+  findOne(id: string) {
+    return this.prismaService.activation.update({
+      where: {
+        id: id,
+      },
+      data: {
+        isActive: true,
+      },
+    });
   }
 }

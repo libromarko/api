@@ -9,10 +9,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { User } from '@prisma/client';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { ActivationService } from './activation.service';
-import { CreateActivationDto } from './dto/create-activation.dto';
-import { UpdateActivationDto } from './dto/update-activation.dto';
 
 @ApiBearerAuth('JWT')
 @UseGuards(JwtGuard)
@@ -20,31 +20,13 @@ import { UpdateActivationDto } from './dto/update-activation.dto';
 export class ActivationController {
   constructor(private readonly activationService: ActivationService) {}
 
-  @Post()
-  create(@Body() createActivationDto: CreateActivationDto) {
-    return this.activationService.create(createActivationDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.activationService.findAll();
+  @Get('user')
+  findActivationByUserId(@GetUser() user: User) {
+    return this.activationService.findByUserId(user.id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.activationService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateActivationDto: UpdateActivationDto,
-  ) {
-    return this.activationService.update(+id, updateActivationDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.activationService.remove(+id);
+    return this.activationService.findOne(id);
   }
 }
