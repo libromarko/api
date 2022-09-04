@@ -5,12 +5,12 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { ActivationService } from './activation.service';
 
-@ApiBearerAuth('JWT')
-@UseGuards(JwtGuard)
 @Controller('activation')
 export class ActivationController {
   constructor(private readonly activationService: ActivationService) {}
 
+  @ApiBearerAuth('JWT')
+  @UseGuards(JwtGuard)
   @Get('user')
   findActivationByUserId(@GetUser() user: User) {
     return this.activationService.findByUserId(user.id);

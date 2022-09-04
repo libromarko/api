@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import * as argon2 from 'argon2';
+import { MailService } from 'src/mail/mail.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SignupAuthDto, SigninAuthDto } from './dto/';
 
@@ -12,13 +13,14 @@ export class AuthService {
     private prismaService: PrismaService,
     private jwt: JwtService,
     private config: ConfigService,
+    private mailService: MailService,
   ) {}
 
   async signup(signupAuthDto: SignupAuthDto) {
     const hash = await argon2.hash(signupAuthDto.password);
 
     try {
-      await this.prismaService.user.create({
+      const createdUser = await this.prismaService.user.create({
         data: {
           email: signupAuthDto.email,
           password: hash,
@@ -35,6 +37,14 @@ export class AuthService {
           },
         },
       });
+
+      const createdActivation = await this.prismaService.activation.findUnique({
+        where: {
+          userId: createdUser.id,
+        },
+      });
+
+      this.mailService.sendUserConfirmation(createdUser, createdActivation.id);
 
       return { signup_success: true };
     } catch (error) {
