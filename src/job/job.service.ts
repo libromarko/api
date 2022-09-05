@@ -7,7 +7,7 @@ export class JobService {
   private readonly logger = new Logger(JobService.name);
   constructor(private readonly prismaService: PrismaService) {}
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleDeleteInactiveUsers() {
     const deleted = await this.deletionOfInactiveUsers();
     this.logger.debug('handleDeleteInactiveUsers', deleted);
