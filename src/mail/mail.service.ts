@@ -7,7 +7,7 @@ export class MailService {
   constructor(private mailerService: MailerService) {}
 
   async sendUserConfirmation(user: User, token: string) {
-    const url = `http://localhost:3000/activation/${token}`;
+    const url = `https://libromarko.xyz/activation/${token}`;
 
     await this.mailerService.sendMail({
       to: user.email,
