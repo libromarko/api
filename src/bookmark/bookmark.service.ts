@@ -17,20 +17,20 @@ export class BookmarkService {
           AND: [{ userId: userId }, { name: 'inbox' }],
         },
       });
-    }
 
-    if (!group) {
-      group = await this.prismaService.group.create({
-        data: {
-          name: 'inbox',
-          user: {
-            connect: { id: userId },
+      if (!group) {
+        group = await this.prismaService.group.create({
+          data: {
+            name: 'inbox',
+            user: {
+              connect: { id: userId },
+            },
+            bookmarks: {
+              create: [],
+            },
           },
-          bookmarks: {
-            create: [],
-          },
-        },
-      });
+        });
+      }
     }
 
     return await this.prismaService.bookmark.create({
