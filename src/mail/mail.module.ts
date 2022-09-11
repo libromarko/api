@@ -12,7 +12,7 @@ import { join } from 'path';
       useFactory: async (config: ConfigService) => ({
         transport: {
           host: config.get('MAIL_HOST'),
-          secure: true,
+          secure: false,
           port: 587,
           auth: {
             user: config.get('MAIL_USER'),
