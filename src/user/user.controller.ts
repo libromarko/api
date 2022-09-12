@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  SetMetadata,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -17,14 +18,17 @@ import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from '@prisma/client';
 import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { UserRole } from './enums/user-role.enum';
+import { Roles } from './decorator/roles.decorator';
+import { RolesGuard } from './guard/role.guard';
 
 @ApiBearerAuth('JWT')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @Roles(UserRole.ADMIN)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
@@ -35,17 +39,20 @@ export class UserController {
   }
 
   @Get()
+  @Roles(UserRole.ADMIN)
   findAll() {
     return this.userService.findAll();
   }
 
   @Get('role')
+  @Roles(UserRole.ADMIN)
   @ApiQuery({ name: 'role', enum: UserRole })
   findFilterByRole(@Query('role') role: UserRole = UserRole.USER) {
     return this.userService.findFilterByRole(role);
   }
 
   @Get(':id')
+  @Roles(UserRole.ADMIN)
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
