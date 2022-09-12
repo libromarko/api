@@ -15,6 +15,9 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from '@prisma/client';
+import { RolesGuard } from 'src/user/guard/role.guard';
+import { Roles } from 'src/user/decorator/roles.decorator';
+import { UserRole } from 'src/user/enums/user-role.enum';
 
 @Controller('group')
 export class GroupController {
@@ -28,7 +31,8 @@ export class GroupController {
   }
 
   @ApiBearerAuth('JWT')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @Get()
   findAll() {
     return this.groupService.findAll();

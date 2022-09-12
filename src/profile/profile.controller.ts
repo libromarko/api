@@ -15,19 +15,24 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from '@prisma/client';
+import { RolesGuard } from 'src/user/guard/role.guard';
+import { Roles } from 'src/user/decorator/roles.decorator';
+import { UserRole } from 'src/user/enums/user-role.enum';
 
 @ApiBearerAuth('JWT')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
 
   @Post()
+  @Roles(UserRole.ADMIN)
   create(@Body() createProfileDto: CreateProfileDto) {
     return this.profileService.create(createProfileDto);
   }
 
   @Get()
+  @Roles(UserRole.ADMIN)
   findAll() {
     return this.profileService.findAll();
   }
@@ -38,6 +43,7 @@ export class ProfileController {
   }
 
   @Get(':id')
+  @Roles(UserRole.ADMIN)
   findOne(@Param('id') id: string) {
     return this.profileService.findOne(id);
   }

@@ -12,12 +12,15 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
+import { Roles } from 'src/user/decorator/roles.decorator';
+import { UserRole } from 'src/user/enums/user-role.enum';
+import { RolesGuard } from 'src/user/guard/role.guard';
 import { BookmarkService } from './bookmark.service';
 import { CreateBookmarkDto } from './dto/create-bookmark.dto';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
 
 @ApiBearerAuth('JWT')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('bookmark')
 export class BookmarkController {
   constructor(private readonly bookmarkService: BookmarkService) {}
@@ -28,6 +31,7 @@ export class BookmarkController {
   }
 
   @Get()
+  @Roles(UserRole.ADMIN)
   findAll() {
     return this.bookmarkService.findAll();
   }
@@ -43,6 +47,7 @@ export class BookmarkController {
   }
 
   @Get(':id')
+  @Roles(UserRole.ADMIN)
   findOne(@Param('id') id: string) {
     return this.bookmarkService.findOne(id);
   }
