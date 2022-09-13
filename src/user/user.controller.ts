@@ -32,6 +32,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @Roles(UserRole.ADMIN, UserRole.USER)
   @Get('me')
   me(@GetUser() user: User) {
     return user;
@@ -57,11 +58,13 @@ export class UserController {
   }
 
   @Patch(':id')
+  @Roles(UserRole.ADMIN, UserRole.USER)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
+  @Roles(UserRole.ADMIN, UserRole.USER)
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }

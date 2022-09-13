@@ -26,6 +26,7 @@ export class BookmarkController {
   constructor(private readonly bookmarkService: BookmarkService) {}
 
   @Post()
+  @Roles(UserRole.USER)
   create(@GetUser() user: User, @Body() createBookmarkDto: CreateBookmarkDto) {
     return this.bookmarkService.create(user.id, createBookmarkDto);
   }
@@ -37,11 +38,13 @@ export class BookmarkController {
   }
 
   @Get('user')
+  @Roles(UserRole.USER)
   findOneByUserId(@GetUser() user: User) {
     return this.bookmarkService.findOneByUserId(user.id);
   }
 
   @Get('group/:id')
+  @Roles(UserRole.USER)
   findBookmarksByGroupId(@GetUser() user: User, @Param('id') id: string) {
     return this.bookmarkService.findBookmarksByGroupId(user.id, id);
   }
@@ -53,6 +56,7 @@ export class BookmarkController {
   }
 
   @Patch(':id')
+  @Roles(UserRole.USER)
   update(
     @Param('id') id: string,
     @Body() updateBookmarkDto: UpdateBookmarkDto,
@@ -61,6 +65,7 @@ export class BookmarkController {
   }
 
   @Delete(':id')
+  @Roles(UserRole.USER)
   remove(@Param('id') id: string) {
     return this.bookmarkService.remove(id);
   }

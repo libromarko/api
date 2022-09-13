@@ -38,6 +38,7 @@ export class ProfileController {
   }
 
   @Get('user')
+  @Roles(UserRole.USER)
   findOneByUserId(@GetUser() user: User) {
     return this.profileService.findOneByUserId(user.id);
   }
@@ -49,11 +50,13 @@ export class ProfileController {
   }
 
   @Patch(':id')
+  @Roles(UserRole.ADMIN, UserRole.USER)
   update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
     return this.profileService.update(id, updateProfileDto);
   }
 
   @Delete(':id')
+  @Roles(UserRole.ADMIN, UserRole.USER)
   remove(@Param('id') id: string) {
     return this.profileService.remove(+id);
   }
