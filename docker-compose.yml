@@ -8,7 +8,7 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
     ports:
       - '3001:3001'
-    command: bash -c "yarn prisma db push && yarn start"
+    command: bash -c "yarn prisma db push && yarn prisma db seed && yarn start"
     depends_on:
       - postgres
 

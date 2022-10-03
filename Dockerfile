@@ -9,7 +9,7 @@ COPY . /app/
 
 RUN npx prisma generate
 
-RUN npx prisma db seed
+#RUN npx prisma db seed
 
 #RUN yarn prisma db push
 

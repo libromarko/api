@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
+import * as argon2 from 'argon2';
 
 const prisma = new PrismaClient();
 const config: ConfigService = new ConfigService();
@@ -15,7 +16,7 @@ async function main() {
     const createdAdmin = await prisma.user.create({
       data: {
         email: config.get('ADMIN_EMAIL'),
-        password: config.get('ADMIN_PASSWORD'),
+        password: await argon2.hash(config.get('ADMIN_PASSWORD')),
         profile: {
           create: {},
         },
