@@ -17,6 +17,7 @@ async function main() {
       data: {
         email: config.get('ADMIN_EMAIL'),
         password: await argon2.hash(config.get('ADMIN_PASSWORD')),
+        role: 'ADMIN',
         profile: {
           create: {},
         },
