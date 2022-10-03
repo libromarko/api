@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import { User } from '@prisma/client';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateSubscriptionDto } from './dto/update-subscription.dto';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 @Injectable()
 export class MailService {
@@ -25,9 +26,17 @@ export class MailService {
   }
 
   async createSubscription(createSubscriptionDto: CreateSubscriptionDto) {
-    return await this.prismaService.mailSubscription.create({
-      data: createSubscriptionDto,
-    });
+    try {
+      return await this.prismaService.mailSubscription.create({
+        data: createSubscriptionDto,
+      });
+    } catch (e) {
+      if (e instanceof PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          throw new ForbiddenException('Credentials taken');
+        }
+      }
+    }
   }
 
   async findAllSubscription() {
