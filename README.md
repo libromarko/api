@@ -1,1 +1,21 @@
 # API Service
+
+## .env Cofig
+### JWT
+JWT_SECRET=""
+
+### Admin
+ADMIN_EMAIL=""
+ADMIN_PASSWORD=""
+
+### Mail
+MAIL_HOST=""
+MAIL_USER=""
+MAIL_PASSWORD=""
+MAIL_FROM=""
+
+### Postgres
+DATABASE_URL=""
+POSTGRES_DB=""
+POSTGRES_USER=""
+POSTGRES_PASSWORD=""
