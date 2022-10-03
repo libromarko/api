@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { Roles } from 'src/user/decorator/roles.decorator';
@@ -26,7 +35,10 @@ export class MailController {
   }
 
   @Patch('subscription/:id')
-  updateSubscription(@Param('id') id: string, @Body() updateSubscriptionDto: UpdateSubscriptionDto) {
+  updateSubscription(
+    @Param('id') id: string,
+    @Body() updateSubscriptionDto: UpdateSubscriptionDto,
+  ) {
     return this.mailService.updateSubscription(id, updateSubscriptionDto);
   }
 
