@@ -1,9 +1,41 @@
 import { PrismaClient } from '@prisma/client';
+import { ConfigService } from '@nestjs/config';
 
 const prisma = new PrismaClient();
+const config: ConfigService = new ConfigService();
 
 async function main() {
-  console.log('SEED');
+  const admin = await prisma.user.findUnique({
+    where: {
+      email: config.get('ADMIN_EMAIL'),
+    },
+  });
+
+  if (!admin) {
+    const createdAdmin = await prisma.user.create({
+      data: {
+        email: config.get('ADMIN_EMAIL'),
+        password: config.get('ADMIN_PASSWORD'),
+        profile: {
+          create: {},
+        },
+        activation: {
+          create: {
+            isActive: true,
+          },
+        },
+        groups: {
+          create: {
+            name: 'inbox',
+          },
+        },
+      },
+    });
+
+    console.log('Admin Created:', createdAdmin);
+  } else {
+    console.log('Admin Found:', admin);
+  }
 }
 
 main();

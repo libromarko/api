@@ -5,10 +5,11 @@ COPY ./package.json /app/
 
 RUN yarn
 
-
 COPY . /app/
 
 RUN npx prisma generate
+
+RUN npx prisma db seed
 
 #RUN yarn prisma db push
 
