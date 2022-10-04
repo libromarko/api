@@ -5,44 +5,28 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class AnalyticsService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findUsersCount() {
+  findUsersCount(filter: any) {
+    if (filter) {
+      return this.prismaService.activation.count({
+        where: {
+          isActive: filter === 'true',
+        },
+      });
+    }
+
     return this.prismaService.user.count();
   }
 
-  findActiveUsersCount() {
-    return this.prismaService.activation.count({
-      where: {
-        isActive: true,
-      },
-    });
-  }
+  findGroupsCount(filter: any) {
+    if (filter) {
+      return this.prismaService.group.count({
+        where: {
+          public: filter === 'true',
+        },
+      });
+    }
 
-  findInactiveUsersCount() {
-    return this.prismaService.activation.count({
-      where: {
-        isActive: false,
-      },
-    });
-  }
-
-  findGroupsCount() {
     return this.prismaService.group.count();
-  }
-
-  findPublicGroupsCount() {
-    return this.prismaService.group.count({
-      where: {
-        public: true,
-      },
-    });
-  }
-
-  findPrivateGroupsCount() {
-    return this.prismaService.group.count({
-      where: {
-        public: false,
-      },
-    });
   }
 
   findBookmarksCount() {

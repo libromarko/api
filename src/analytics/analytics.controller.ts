@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query, Req } from '@nestjs/common';
+import { ApiQuery } from '@nestjs/swagger';
 import { AnalyticsService } from './analytics.service';
 
 @Controller('analytics')
@@ -6,33 +7,15 @@ export class AnalyticsController {
   constructor(private readonly analyticsService: AnalyticsService) {}
 
   @Get('count/users')
-  findUsersCount() {
-    return this.analyticsService.findUsersCount();
-  }
-
-  @Get('count/active-users')
-  findActiveUsersCount() {
-    return this.analyticsService.findActiveUsersCount();
-  }
-
-  @Get('count/inactive-users')
-  findInactiveUsersCount() {
-    return this.analyticsService.findInactiveUsersCount();
+  @ApiQuery({ name: 'active', type: Boolean, required: false })
+  findUsersCount(@Query('active') filter?: boolean) {
+    return this.analyticsService.findUsersCount(filter);
   }
 
   @Get('count/groups')
-  findGroupsCount() {
-    return this.analyticsService.findGroupsCount();
-  }
-
-  @Get('count/public-groups')
-  findPublicGroupsCount() {
-    return this.analyticsService.findPublicGroupsCount();
-  }
-
-  @Get('count/private-groups')
-  findPrivateGroupsCount() {
-    return this.analyticsService.findPrivateGroupsCount();
+  @ApiQuery({ name: 'public', type: Boolean, required: false })
+  findGroupsCount(@Query('public') filter?: boolean) {
+    return this.analyticsService.findGroupsCount(filter);
   }
 
   @Get('count/bookmarks')
